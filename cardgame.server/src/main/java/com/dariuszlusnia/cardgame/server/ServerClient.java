@@ -59,7 +59,7 @@ public class ServerClient extends Thread {
                 String wiadomoscString = reader.readLine();
                 Message message = Message.deserialize(wiadomoscString);
                 switch (message.getMessageType()) {
-                    case WIADOMOSC: {
+                    case ADD_CARD: {
                         for (ServerClient client: CardGameServerThread.clients) {
                             client.getWriter().println(wiadomoscString);
                         }
