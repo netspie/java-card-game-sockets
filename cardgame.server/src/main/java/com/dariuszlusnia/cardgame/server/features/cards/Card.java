@@ -14,4 +14,12 @@ public class Card {
         this.Speed = speed;
         this.Health = health;
     }
+
+    public Card() {
+        this.Id = "";
+        this.Name = "";
+        this.Attack = 0;
+        this.Speed = 0;
+        this.Health = 0;
+    }
 }

@@ -1,14 +1,12 @@
 package com.dariuszlusnia.cardgame.server.features.cards;
 
-import com.dariuszlusnia.cardgame.server.common.Repository;
-
 import java.util.UUID;
 
 public final class CardsService {
 
-    private final Repository<Card> cardRepository;
+    private final CardRepository cardRepository;
 
-    public CardsService(Repository<Card> cardRepository) {
+    public CardsService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
     }
 
