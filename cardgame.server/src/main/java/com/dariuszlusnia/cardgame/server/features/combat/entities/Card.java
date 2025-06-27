@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.dariuszlusnia.cardgame.server.domain.features.combat.entities;
+package com.dariuszlusnia.cardgame.server.features.combat.entities;
 
-import com.dariuszlusnia.cardgame.server.combat.events.CardDamagedEvent;
-import com.dariuszlusnia.cardgame.server.combat.events.CombatEvent;
+import com.dariuszlusnia.cardgame.server.features.combat.events.CardDamagedEvent;
+import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 
 import java.util.ArrayList;
 import java.util.List;
