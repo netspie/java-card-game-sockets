@@ -3,6 +3,9 @@
 ### Temat
 Prototyp gry karcianej, w której dwaj gracz rozgrywają mecz przy użyciu wcześniej predefiniowanych i wylosowanych kart, z których każda zawiera nazwę oraz kilka statystyk (Atak, Obrona, Szybkość).
 
+### Autor
+Dariusz Luśnia
+
 ### Wymagania
 Aby system działał należy uruchomić serwer, a następnie conajmniej dwóch klientów.
 
@@ -33,3 +36,14 @@ Architektura serwera jest oparta o trzy fundamentalne warstwy:
 - common - zawierające wszelki kod który może być użyty w każdym miejscu aplikacji, np. dodatkowe funkcje do operacji na kolekcjach
 - features - warstwa dzieląca poszczególne funkcjonalności serwera perkpesktywy wysokopoziomowej, tutaj zarządzanie kartami (cards) oraz rozgrywka w czasie rzeczywistym (combat)
 - requests - warstwa odpowiedzialna za wykrywanie połączeń oraz przekazywanie wiadomości głębiej do logiki aplikacji
+
+##### Klient
+
+Klient z kolei to aplikacja okienkowa w Swingu, która umożliwia graczowi lub administratorowi interakcję z serwerem.
+
+Składa się z następujących okien:
+
+- HomeFrame – ekran startowy, wybór sposobu logogwania (gracz / administrator)
+- AdminFrame – panel administracyjny do zarządzania kartami (dodawanie, edytowanie, usuwanie)
+- CombatFrame – interfejs rozgrywki gracza: wybór kart, wizualizacja pojedynków
+
