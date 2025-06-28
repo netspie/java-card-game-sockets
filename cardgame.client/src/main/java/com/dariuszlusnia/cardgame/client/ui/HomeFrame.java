@@ -4,8 +4,12 @@
  */
 package com.dariuszlusnia.cardgame.client.ui;
 
+import com.dariuszlusnia.cardgame.client.common.CollectionFunctions;
 import com.dariuszlusnia.cardgame.client.common.MessageType;
 import com.dariuszlusnia.cardgame.client.common.RequestProcessor;
+import com.dariuszlusnia.cardgame.client.ui.events.CombatCreatedEvent;
+import com.dariuszlusnia.cardgame.client.ui.events.CombatEvent;
+
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +18,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  *
@@ -139,8 +145,7 @@ public class HomeFrame extends javax.swing.JFrame {
         }
         
         this.processor.write(MessageType.SIGN_IN_PLAYER);
-        var data = this.processor.readData();
-        
+
         var frame = new CombatFrame();
         frame.init(this.processor);
         frame.setVisible(true);

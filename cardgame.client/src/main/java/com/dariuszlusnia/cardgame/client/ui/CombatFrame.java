@@ -7,6 +7,8 @@ package com.dariuszlusnia.cardgame.client.ui;
 import com.dariuszlusnia.cardgame.client.StoredCard;
 import com.dariuszlusnia.cardgame.client.common.MessageType;
 import com.dariuszlusnia.cardgame.client.common.RequestProcessor;
+import com.dariuszlusnia.cardgame.client.ui.events.CombatCreatedEvent;
+import com.dariuszlusnia.cardgame.client.ui.events.PlayerJoinedEvent;
 
 /**
  *
@@ -15,6 +17,8 @@ import com.dariuszlusnia.cardgame.client.common.RequestProcessor;
 public class CombatFrame extends javax.swing.JFrame {
 
     private RequestProcessor processor;
+    private CombatFrameThread thread;
+    private String thisPlayerId = "";
     /**
      * Creates new form CombatFrame
      */
@@ -24,13 +28,25 @@ public class CombatFrame extends javax.swing.JFrame {
 
     public void init(RequestProcessor processor) {
         this.processor = processor;
+        
+        thread = new CombatFrameThread(this);
+        thread.start();
+
+        var data = this.processor.readData();
+        var combatCreatedEventOpt = EventConverter.getEvent(data, CombatCreatedEvent.class);
+        var playerJoinedEventOpt = EventConverter.getEvent(data, PlayerJoinedEvent.class);
+        
+        if (!playerJoinedEventOpt.isEmpty()) {
+            this.thisPlayerId = playerJoinedEventOpt.get().PlayerId;
+        }
+        
         fetchDataAndRefreshView();
     }
     
     private void fetchDataAndRefreshView() {
         refreshView();
     }
-     
+    
     private void refreshView() {
     }
     
@@ -125,6 +141,7 @@ public class CombatFrame extends javax.swing.JFrame {
         
         this.processor.write(MessageType.CLOSE_CONNECTION);
         
+        thread.interrupt();
         this.dispose();
     }//GEN-LAST:event_signOutButtonActionPerformed
 
@@ -169,4 +186,8 @@ public class CombatFrame extends javax.swing.JFrame {
     private javax.swing.JPanel thatCardsPanel;
     private javax.swing.JPanel thisCardsPanel;
     // End of variables declaration//GEN-END:variables
+
+    private enum State {
+        WaitingOnPlayer,
+    }
 }
