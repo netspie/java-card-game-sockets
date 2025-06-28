@@ -18,13 +18,15 @@ public class Configure {
         
         SIGN_IN_ADMIN,
         SIGN_IN_PLAYER,
-        
+
+        GET_CARDS,
         ADD_CARD,
         UPDATE_CARD,
         REMOVE_CARD,
         
         JOIN_GAME,
         DRAW_CARDS,
+
+        EVENT
     }
-    
 }

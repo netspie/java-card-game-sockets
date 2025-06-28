@@ -32,7 +32,7 @@ public class Combat {
         
         this.players.add(player);
 
-        return List.of(new PlayerJoinedEvent(player.Id));
+        return List.of(new PlayerJoinedEvent(Id, player.Id));
     }
 
     public List<CombatEvent> DrawStartingPlayer() {
@@ -43,14 +43,14 @@ public class Combat {
         var player2CardsSpeedSum = player2.getCardsSpeedSum();
 
         if (player1CardsSpeedSum > player2CardsSpeedSum)
-            return List.of(new FirstPlayerDecidedEvent(player1.Id));
+            return List.of(new FirstPlayerDecidedEvent(Id, player1.Id));
 
         if (player1CardsSpeedSum < player2CardsSpeedSum)
-            return List.of(new FirstPlayerDecidedEvent(player2.Id));
+            return List.of(new FirstPlayerDecidedEvent(Id, player2.Id));
 
         var random = new Random();
         int index = random.nextInt(MaxPlayerCount);
-        return List.of(new FirstPlayerDecidedEvent(this.players.get(index).Id));
+        return List.of(new FirstPlayerDecidedEvent(Id, this.players.get(index).Id));
     }
 
     public List<CombatEvent> Attack(

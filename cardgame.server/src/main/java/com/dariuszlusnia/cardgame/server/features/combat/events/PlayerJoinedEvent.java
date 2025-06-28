@@ -22,9 +22,9 @@ public class PlayerJoinedEvent extends CombatEvent {
     @Override
     public String toString() {
         return new StringJoiner("&")
-            .add("combat-id=" + CombatId)
-            .add("event-id=" + EventId)
-            .add("player-id=" + PlayerId)
-            .toString();
+                .add("combat-id=" + CombatId)
+                .add("event-id=" + EventId)
+                .add("player-id=" + PlayerId)
+                .toString();
     }
 }

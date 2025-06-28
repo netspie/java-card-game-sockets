@@ -34,11 +34,7 @@ public class JoinRandomCombatCommandHandler {
 
         var combat = combatOpt.get();
 
-        var cardsOpt = this.cardRepository.getAll();
-        if (cardsOpt.isEmpty())
-            return;
-
-        var cards = cardsOpt.get();
+        var cards = this.cardRepository.getAll();
         if (cards.size() < PlayerCardCount)
             return;
 

@@ -6,6 +6,7 @@
 package com.dariuszlusnia.cardgame.server;
 
 import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
+import com.dariuszlusnia.cardgame.server.features.cards.CardsService;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.Combat;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
@@ -42,7 +43,8 @@ public class CardGameServerThread extends Thread {
         try {
             while (true) {
                 Socket socket = serverSocket.accept();
-                ServerClient client = new ServerClient(socket, this.combatRepository, this.cardRepository, this.clients);
+                ServerClient client = new ServerClient(
+                    socket, this.combatRepository, this.cardRepository, this.clients, this.combatEventsPublisher);
                 client.start();
 
                 String clientId = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();

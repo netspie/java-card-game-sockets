@@ -4,6 +4,9 @@
 
 package com.dariuszlusnia.cardgame.server;
 
+import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
+import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
+
 import java.io.IOException;
 
 /**
@@ -12,8 +15,11 @@ import java.io.IOException;
  */
 public class CardGameServer {
     public static void main(String[] args) {
+        var combatRepository = new CombatRepository();
+        var cardRepository = new CardRepository("data/cards");
+
         try {
-            var server = new CardGameServerThread();
+            var server = new CardGameServerThread(combatRepository, cardRepository);
             server.start();
         } catch (IOException ex) {
             System.out.println("Could not start the server");

@@ -1,0 +1,1 @@
+id=6159bce9-b212-43b6-9319-97e3a58f0556;name=Knight;attack=5;speed=5;health=5

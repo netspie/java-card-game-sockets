@@ -4,7 +4,9 @@
  */
 package com.dariuszlusnia.cardgame.server;
 
+import com.dariuszlusnia.cardgame.server.features.cards.Card;
 import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
+import com.dariuszlusnia.cardgame.server.features.cards.CardsService;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
 import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
@@ -40,11 +42,11 @@ public class ServerClient extends Thread {
     private final CombatEventsPublisher combatEventsPublisher;
 
     public ServerClient(
-        Socket socket,
-        CombatRepository combatRepository,
-        CardRepository cardRepository,
-        Map<String, ServerClient> clients,
-        CombatEventsPublisher combatEventsPublisher) {
+            Socket socket,
+            CombatRepository combatRepository,
+            CardRepository cardRepository,
+            Map<String, ServerClient> clients,
+            CombatEventsPublisher combatEventsPublisher) {
         this.socket = socket;
         this.combatRepository = combatRepository;
         this.cardRepository = cardRepository;
@@ -85,21 +87,74 @@ public class ServerClient extends Thread {
     public void run() {
         try {
             while (true) {
-                String wiadomoscString = reader.readLine();
-                Message message = Message.deserialize(wiadomoscString);
+                String messageString = reader.readLine();
+                Message message = Message.deserialize(messageString);
                 switch (message.getMessageType()) {
+
+                    case SIGN_IN_ADMIN: {
+                        writer.println(1);
+                        break;
+                    }
+
+                    case ADD_CARD: {
+                        var map = deserializeToMap(message);
+                        var service = new CardsService(this.cardRepository);
+                        service.AddCard(
+                            map.get("name"),
+                            Integer.parseInt(map.get("attack")),
+                            Integer.parseInt(map.get("speed")),
+                            Integer.parseInt(map.get("health")));
+
+                        writer.println(1);
+                        break;
+                    }
+
+                    case UPDATE_CARD: {
+                        var map = deserializeToMap(message);
+                        var service = new CardsService(this.cardRepository);
+                        service.UpdateCard(
+                            map.get("id"),
+                            map.get("name"),
+                            Integer.parseInt(map.get("attack")),
+                            Integer.parseInt(map.get("speed")),
+                            Integer.parseInt(map.get("health")));
+
+                        writer.println(1);
+                        break;
+                    }
+
+                    case REMOVE_CARD: {
+                        var map = deserializeToMap(message);
+                        var service = new CardsService(this.cardRepository);
+                        service.RemoveCard(map.get("id"));
+                        writer.println(1);
+                        break;
+                    }
+
+                    case GET_CARDS: {
+                        var service = new CardsService(this.cardRepository);
+                        var cards = service.GetAllCards();
+                        var cardsString = Card.cardsToString(cards);
+                        if (cardsString.isEmpty())
+                            cardsString += "_";
+
+                        writer.println(Configure.MessageType.GET_CARDS.toString() + "#" + cardsString);
+                        break;
+                    }
+
+                    case CLOSE_CONNECTION: {
+                        close();
+                        break;
+                    }
 
                     case JOIN_GAME: {
                         var map = deserializeToMap(message);
                         var joinCommand = new JoinRandomCombatCommand(map.get("player-id"));
                         var handler = new JoinRandomCombatCommandHandler(this.combatRepository, this.cardRepository, this.combatEventsPublisher);
                         handler.handle(joinCommand);
+                        break;
                     }
 
-                    case CLOSE_CONNECTION: {
-                        close();
-                    }
-                    
                     default:
                         break;
                 }

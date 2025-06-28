@@ -1,0 +1,1 @@
+id=5c701fce-9214-4dd7-ab6f-00eb1a07b7e1;name=Warlock;attack=10;speed=2;health=6

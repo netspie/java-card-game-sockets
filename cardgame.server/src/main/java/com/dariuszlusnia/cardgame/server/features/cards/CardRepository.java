@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,16 +59,17 @@ public final class CardRepository {
         }
     }
 
-    public Optional<List<Card>> getAll() {
+    public List<Card> getAll() {
         var dir = getOrCreateDirectory();
         var files = dir.listFiles();
-        if (files == null) return Optional.empty();
+        if (files == null)
+            return Collections.emptyList();
 
-        return Optional.of(Arrays.stream(files)
+        return Arrays.stream(files)
                 .map(this::readCardFromFile)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .toList());
+                .toList();
     }
 
     public Optional<Card> get(String id) {
