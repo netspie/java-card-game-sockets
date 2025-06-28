@@ -1,0 +1,1 @@
+id=4933bdd2-d23f-447f-a9d9-9812716f6e60;name=Sorcerer;attack=8;speed=2;health=7

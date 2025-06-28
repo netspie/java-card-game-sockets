@@ -47,4 +47,18 @@ public class CombatRepository {
 
         return true;
     }
+
+    public Optional<Combat> deleteWherePlayerId(String playerId) {
+        var combatToDelete = this.map.values()
+            .stream()
+            .filter(x -> x.players.stream().anyMatch(p -> p.Id.equals(playerId)))
+            .findFirst();
+
+        if (combatToDelete.isEmpty())
+            return Optional.empty();
+
+        this.map.remove(combatToDelete.get().Id);
+
+        return combatToDelete;
+    }
 }

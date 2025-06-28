@@ -1,0 +1,1 @@
+id=15e16c4a-05a1-420c-82d2-a3f2d1024248;name=Mage;attack=6;speed=4;health=9

@@ -9,6 +9,7 @@ import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
 import com.dariuszlusnia.cardgame.server.features.cards.CardsService;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
 import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
+import com.dariuszlusnia.cardgame.server.features.combat.events.PlayerDisconnectedEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.JoinRandomCombatCommand;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.JoinRandomCombatCommandHandler;
@@ -22,6 +23,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -71,7 +73,7 @@ public class ServerClient extends Thread {
         writer.close();
         try {
             reader.close();
-            String clientId = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+            var clientId = getPlayerId();
             this.clients.remove(clientId);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -93,6 +95,7 @@ public class ServerClient extends Thread {
 
                     case SIGN_IN_ADMIN: {
                         writer.println(1);
+                        writer.flush();
                         break;
                     }
 
@@ -106,6 +109,7 @@ public class ServerClient extends Thread {
                             Integer.parseInt(map.get("health")));
 
                         writer.println(1);
+                        writer.flush();
                         break;
                     }
 
@@ -120,6 +124,7 @@ public class ServerClient extends Thread {
                             Integer.parseInt(map.get("health")));
 
                         writer.println(1);
+                        writer.flush();
                         break;
                     }
 
@@ -128,6 +133,7 @@ public class ServerClient extends Thread {
                         var service = new CardsService(this.cardRepository);
                         service.RemoveCard(map.get("id"));
                         writer.println(1);
+                        writer.flush();
                         break;
                     }
 
@@ -139,17 +145,24 @@ public class ServerClient extends Thread {
                             cardsString += "_";
 
                         writer.println(Configure.MessageType.GET_CARDS.toString() + "#" + cardsString);
+                        writer.flush();
                         break;
                     }
 
                     case CLOSE_CONNECTION: {
+                        var playerId = getPlayerId();
+                        var combatOpt = this.combatRepository.deleteWherePlayerId(playerId);
+                        if (combatOpt.isPresent()) {
+                            var combat = combatOpt.get();
+                            this.combatEventsPublisher.publish(combat, List.of(new PlayerDisconnectedEvent(combat.Id)));
+                        }
                         close();
                         break;
                     }
 
-                    case JOIN_GAME: {
-                        var map = deserializeToMap(message);
-                        var joinCommand = new JoinRandomCombatCommand(map.get("player-id"));
+                    case SIGN_IN_PLAYER: {
+                        var playerId = getPlayerId();
+                        var joinCommand = new JoinRandomCombatCommand(playerId);
                         var handler = new JoinRandomCombatCommandHandler(this.combatRepository, this.cardRepository, this.combatEventsPublisher);
                         handler.handle(joinCommand);
                         break;
@@ -170,6 +183,10 @@ public class ServerClient extends Thread {
 
     public BufferedReader getReader() {
         return reader;
+    }
+
+    private String getPlayerId() {
+        return socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
     }
 
     private static Map<String, String> deserializeToMap(Message message) {

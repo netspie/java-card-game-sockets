@@ -62,6 +62,11 @@ public class HomeFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         signInAsPlayerButton.setText("Sign In as Player");
+        signInAsPlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signInAsPlayerButtonActionPerformed(evt);
+            }
+        });
 
         signInAsAdminButton.setText("Sign In as Admin");
         signInAsAdminButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +129,24 @@ public class HomeFrame extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_signInAsAdminButtonActionPerformed
+
+    private void signInAsPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInAsPlayerButtonActionPerformed
+        this.messageLabel.setText("Signing In..");
+        
+        if (!connectToServer()) {
+            this.messageLabel.setText("Server not running");
+            return;
+        }
+        
+        this.processor.write(MessageType.SIGN_IN_PLAYER);
+        var data = this.processor.readData();
+        
+        var frame = new CombatFrame();
+        frame.init(this.processor);
+        frame.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_signInAsPlayerButtonActionPerformed
 
     /**
      * @param args the command line arguments

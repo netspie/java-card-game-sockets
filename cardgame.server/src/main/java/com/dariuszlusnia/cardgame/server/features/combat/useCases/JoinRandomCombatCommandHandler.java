@@ -28,9 +28,16 @@ public class JoinRandomCombatCommandHandler {
     }
 
     public void handle(JoinRandomCombatCommand command) {
+        var events = new ArrayList<CombatEvent>();
+
         var combatOpt = this.combatRepository.getFree();
-        if (combatOpt.isEmpty())
-            combatOpt = Optional.of(new Combat(UUID.randomUUID().toString()));
+        if (combatOpt.isEmpty() || combatOpt.get().players.stream().noneMatch(x -> x.Id.equals(command.PlayerId())))
+        {
+            var combatId = UUID.randomUUID().toString();
+            var combatEntry = Combat.create(combatId);
+            combatOpt = Optional.of(combatEntry.getKey());
+            events.addAll(combatEntry.getValue());
+        }
 
         var combat = combatOpt.get();
 
@@ -38,12 +45,13 @@ public class JoinRandomCombatCommandHandler {
         if (cards.size() < PlayerCardCount)
             return;
 
-        Collections.shuffle(cards);
-        var cardsShuffled = cards.stream().limit(PlayerCardCount).toList();
+        List<Card> mutableCards = new ArrayList<>(cards);
+        Collections.shuffle(mutableCards);
+        var cardsShuffled = mutableCards.stream().limit(PlayerCardCount).toList();
         var combatCards = cardsToCombatCards(cardsShuffled);
 
-        var player = new CombatPlayer(UUID.randomUUID().toString(), combatCards);
-        var events = combat.AddPlayer(player);
+        var player = new CombatPlayer(command.PlayerId(), combatCards);
+        events.addAll(combat.AddPlayer(player));
 
         publisher.publish(combat, events);
     }

@@ -4,6 +4,7 @@
  */
 package com.dariuszlusnia.cardgame.server.features.combat.entities;
 
+import com.dariuszlusnia.cardgame.server.features.combat.events.CombatCreatedEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.events.FirstPlayerDecidedEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.events.PlayerJoinedEvent;
@@ -14,15 +15,23 @@ import java.util.*;
  *
  * @author dariu
  */
-public class Combat {
+public final class Combat {
     public static final int MaxPlayerCount = 2;
 
     public final String Id;
 
     public final List<CombatPlayer> players = new ArrayList<>();
     public Optional<String> nextTurnPlayerId = Optional.empty();
-    
-    public Combat(String id) {
+
+    public static AbstractMap.SimpleEntry<Combat, List<CombatEvent>> create(String id) {
+        var combat = new Combat(id);
+
+        return new AbstractMap.SimpleEntry<>(
+            combat,
+            List.of(new CombatCreatedEvent(id)));
+    }
+
+    private Combat(String id) {
         this.Id = id;
     }
     
