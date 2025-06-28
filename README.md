@@ -27,3 +27,9 @@ Każda akcji będzie towarzyszyła odpowiednia notyfikacja tekstowa oraz/lub zmi
 
 System składa się z dwóch aplikacji - serwera i klienta. 
 
+##### Serwer
+
+Architektura serwera jest oparta o trzy fundamentalne warstwy:
+- common - zawierające wszelki kod który może być użyty w każdym miejscu aplikacji, np. dodatkowe funkcje do operacji na kolekcjach
+- features - warstwa dzieląca poszczególne funkcjonalności serwera perkpesktywy wysokopoziomowej, tutaj zarządzanie kartami (cards) oraz rozgrywka w czasie rzeczywistym (combat)
+- requests - warstwa odpowiedzialna za wykrywanie połączeń oraz przekazywanie wiadomości głębiej do logiki aplikacji
