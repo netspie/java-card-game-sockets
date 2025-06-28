@@ -4,8 +4,25 @@
  */
 package com.dariuszlusnia.cardgame.server.features.combat.events;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author dariu
  */
-public abstract class CombatEvent {}
+public abstract class CombatEvent {
+    public final String CombatId;
+
+    protected CombatEvent(String combatId) {
+        CombatId = combatId;
+    }
+
+    public abstract String toString();
+
+    public static String eventsToString(List<CombatEvent> events) {
+        return events.stream()
+            .map(CombatEvent::toString)
+            .collect(Collectors.joining(";"));
+    }
+}

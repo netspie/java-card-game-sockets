@@ -15,14 +15,18 @@ import java.util.*;
  * @author dariu
  */
 public class Combat {
-    public final int MaxPlayerCount = 2;
+    public static final int MaxPlayerCount = 2;
 
-    public final List<Player> players = new ArrayList<>();
+    public final String Id;
+
+    public final List<CombatPlayer> players = new ArrayList<>();
     public Optional<String> nextTurnPlayerId = Optional.empty();
     
-    public Combat() {}
+    public Combat(String id) {
+        this.Id = id;
+    }
     
-    public List<CombatEvent> AddPlayer(Player player) {
+    public List<CombatEvent> AddPlayer(CombatPlayer player) {
         if (this.players.size() >= MaxPlayerCount)
             return Collections.emptyList();
         
@@ -65,13 +69,13 @@ public class Combat {
         return attackingPlayer.get().Attack(attackingCardName, defendingPlayer.get());
     }
     
-    private Optional<Player> getPlayerOfId(String id) {
+    private Optional<CombatPlayer> getPlayerOfId(String id) {
         return this.players.stream()
             .filter(x -> x.Id.equals(id))
             .findFirst();
     }
     
-    private Optional<Player> getPlayerNotOfId(String id) {
+    private Optional<CombatPlayer> getPlayerNotOfId(String id) {
         return this.players.stream()
             .filter(x -> !x.Id.equals(id))
             .findFirst();

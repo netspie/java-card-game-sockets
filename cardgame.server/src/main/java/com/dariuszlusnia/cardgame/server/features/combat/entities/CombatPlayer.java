@@ -12,18 +12,18 @@ import java.util.*;
  *
  * @author dariu
  */
-public class Player {
+public class CombatPlayer {
     public final String Id;
-    public final List<Card> Cards;
+    public final List<CombatCard> Cards;
     
-    public Player(String id, List<Card> cards) {
+    public CombatPlayer(String id, List<CombatCard> cards) {
         this.Id = id;
         this.Cards = cards;
     }
     
     public List<CombatEvent> Attack(
         String attackingCardName,
-        Player defendingPlayer) {
+        CombatPlayer defendingPlayer) {
         
         var attackingCard = getCardOfName(attackingCardName);
         if (attackingCard.isEmpty())
@@ -34,22 +34,22 @@ public class Player {
 
     public int getCardsSpeedSum() {
         return Cards.stream()
-            .mapToInt(Card::getSpeed)
+            .mapToInt(CombatCard::getSpeed)
             .sum();
     }
 
-    private List<CombatEvent> damageBy(Card card) {
+    private List<CombatEvent> damageBy(CombatCard card) {
         var defendingCard = getRandomCard();
         return defendingCard.DamageBy(card);
     }
 
-    private Card getRandomCard() {
+    private CombatCard getRandomCard() {
         var random = new Random();
         int index = random.nextInt(Cards.size());
         return Cards.get(index);
     }
 
-    private Optional<Card> getCardOfName(String name) {
+    private Optional<CombatCard> getCardOfName(String name) {
         return this.Cards.stream()
             .filter(x -> x.getName().equals(name))
             .findFirst();

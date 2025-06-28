@@ -5,23 +5,36 @@
 
 package com.dariuszlusnia.cardgame.server;
 
+import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
+import com.dariuszlusnia.cardgame.server.features.combat.entities.Combat;
+import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
+import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author dariu
  */
 public class CardGameServerThread extends Thread {
-    private ServerSocket serverSocket;
-    public static List<ServerClient> clients;
+    private final CombatRepository combatRepository;
+    private final CardRepository cardRepository;
 
-    public CardGameServerThread() throws IOException {
-        this.clients = new ArrayList<>();
+    private ServerSocket serverSocket;
+    private final Map<String, ServerClient> clients = new HashMap<>();
+    private final CombatEventsPublisher combatEventsPublisher;
+
+    public CardGameServerThread(CombatRepository combatRepository, CardRepository cardRepository) throws IOException {
+        this.combatRepository = combatRepository;
+        this.cardRepository = cardRepository;
         this.serverSocket = new ServerSocket(Configure.PORT);
+        this.combatEventsPublisher = new CombatEventsPublisher(this.clients);
     }
 
     @Override
@@ -29,9 +42,11 @@ public class CardGameServerThread extends Thread {
         try {
             while (true) {
                 Socket socket = serverSocket.accept();
-                ServerClient client = new ServerClient(socket);
+                ServerClient client = new ServerClient(socket, this.combatRepository, this.cardRepository, this.clients);
                 client.start();
-                clients.add(client);
+
+                String clientId = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+                clients.put(clientId, client);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -41,6 +56,5 @@ public class CardGameServerThread extends Thread {
                 throw new RuntimeException(ex);
             }
         }
-
     }
 }

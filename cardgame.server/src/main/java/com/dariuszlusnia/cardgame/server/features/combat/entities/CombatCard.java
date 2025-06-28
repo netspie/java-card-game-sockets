@@ -4,7 +4,6 @@
  */
 package com.dariuszlusnia.cardgame.server.features.combat.entities;
 
-import com.dariuszlusnia.cardgame.server.features.combat.events.CardDamagedEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 
 import java.util.ArrayList;
@@ -14,24 +13,27 @@ import java.util.List;
  *
  * @author dariu
  */
-public final class Card {
+public final class CombatCard {
+    public final String id;
+    public final String originalId;
     private final String name;
     private int attack;
     private int speed;
     private int health;
 
-    public Card(String name, int attack, int speed, int health) {
+    public CombatCard(String id, String originalId, String name, int attack, int speed, int health) {
+        this.id = id;
+        this.originalId = originalId;
         this.name = name;
         this.setAttack(attack);
         this.setSpeed(speed);
         this.setHealth(health);
     }
 
-    public List<CombatEvent> DamageBy(Card card) {
+    public List<CombatEvent> DamageBy(CombatCard card) {
         var events = new ArrayList<CombatEvent>();
 
         this.setHealth(this.getHealth() - card.getAttack());
-        events.add(new CardDamagedEvent());
 
         if (this.getHealth() < 0)
             this.setHealth(0);

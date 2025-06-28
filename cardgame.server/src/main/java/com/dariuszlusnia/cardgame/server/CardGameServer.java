@@ -4,13 +4,19 @@
 
 package com.dariuszlusnia.cardgame.server;
 
+import java.io.IOException;
+
 /**
  *
  * @author dariu
  */
 public class CardGameServer {
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        try {
+            var server = new CardGameServerThread();
+            server.start();
+        } catch (IOException ex) {
+            System.out.println("Could not start the server");
+        }
     }
 }

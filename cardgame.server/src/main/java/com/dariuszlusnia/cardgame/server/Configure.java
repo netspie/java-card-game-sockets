@@ -23,7 +23,7 @@ public class Configure {
         UPDATE_CARD,
         REMOVE_CARD,
         
-        START_GAME,
+        JOIN_GAME,
         DRAW_CARDS,
     }
     
