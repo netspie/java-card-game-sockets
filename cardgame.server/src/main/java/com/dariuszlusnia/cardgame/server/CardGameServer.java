@@ -6,6 +6,7 @@ package com.dariuszlusnia.cardgame.server;
 
 import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
+import com.dariuszlusnia.cardgame.server.requests.CardGameServerThread;
 
 import java.io.IOException;
 

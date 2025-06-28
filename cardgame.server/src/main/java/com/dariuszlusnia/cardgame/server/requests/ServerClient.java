@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.dariuszlusnia.cardgame.server;
+package com.dariuszlusnia.cardgame.server.requests;
 
 import com.dariuszlusnia.cardgame.server.features.cards.Card;
 import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
 import com.dariuszlusnia.cardgame.server.features.cards.CardsService;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
-import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.events.PlayerDisconnectedEvent;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.JoinRandomCombatCommand;
@@ -22,7 +21,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -144,7 +142,7 @@ public class ServerClient extends Thread {
                         if (cardsString.isEmpty())
                             cardsString += "_";
 
-                        writer.println(Configure.MessageType.GET_CARDS.toString() + "#" + cardsString);
+                        writer.println(MessageType.GET_CARDS.toString() + "#" + cardsString);
                         writer.flush();
                         break;
                     }

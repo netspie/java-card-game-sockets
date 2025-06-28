@@ -1,7 +1,7 @@
 package com.dariuszlusnia.cardgame.server.features.combat.useCases;
 
-import com.dariuszlusnia.cardgame.server.Configure;
-import com.dariuszlusnia.cardgame.server.ServerClient;
+import com.dariuszlusnia.cardgame.server.requests.MessageType;
+import com.dariuszlusnia.cardgame.server.requests.ServerClient;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.Combat;
 import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
 
@@ -22,7 +22,7 @@ public class CombatEventsPublisher {
             .map(Map.Entry::getValue)
             .toList();
 
-        var eventsString = String.valueOf(Configure.MessageType.EVENT) + "#" + CombatEvent.eventsToString(events);
+        var eventsString = String.valueOf(MessageType.EVENT) + "#" + CombatEvent.eventsToString(events);
         for (ServerClient client: clients) {
             client.getWriter().println(eventsString);
             client.getWriter().flush();

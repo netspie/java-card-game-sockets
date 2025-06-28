@@ -1,9 +1,5 @@
 package com.dariuszlusnia.cardgame.server.features.cards;
 
-import com.dariuszlusnia.cardgame.server.CollectionFunctions;
-import com.dariuszlusnia.cardgame.server.features.combat.events.CombatEvent;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;

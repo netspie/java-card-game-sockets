@@ -2,30 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.dariuszlusnia.cardgame.server;
+package com.dariuszlusnia.cardgame.server.requests;
 
 /**
  *
  * @author dariu
  */
-public class Configure {
-
+public class Configuration {
     public static final String IP = "localhost";
     public static final int PORT = 2002;
-
-    public enum MessageType {
-        CLOSE_CONNECTION,
-        
-        SIGN_IN_ADMIN,
-        SIGN_IN_PLAYER,
-
-        GET_CARDS,
-        ADD_CARD,
-        UPDATE_CARD,
-        REMOVE_CARD,
-
-        DRAW_CARDS,
-
-        EVENT
-    }
 }

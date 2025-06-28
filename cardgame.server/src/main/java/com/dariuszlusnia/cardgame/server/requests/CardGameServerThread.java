@@ -3,20 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.dariuszlusnia.cardgame.server;
+package com.dariuszlusnia.cardgame.server.requests;
 
 import com.dariuszlusnia.cardgame.server.features.cards.CardRepository;
-import com.dariuszlusnia.cardgame.server.features.cards.CardsService;
-import com.dariuszlusnia.cardgame.server.features.combat.entities.Combat;
 import com.dariuszlusnia.cardgame.server.features.combat.entities.CombatRepository;
 import com.dariuszlusnia.cardgame.server.features.combat.useCases.CombatEventsPublisher;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +30,7 @@ public class CardGameServerThread extends Thread {
     public CardGameServerThread(CombatRepository combatRepository, CardRepository cardRepository) throws IOException {
         this.combatRepository = combatRepository;
         this.cardRepository = cardRepository;
-        this.serverSocket = new ServerSocket(Configure.PORT);
+        this.serverSocket = new ServerSocket(Configuration.PORT);
         this.combatEventsPublisher = new CombatEventsPublisher(this.clients);
     }
 
