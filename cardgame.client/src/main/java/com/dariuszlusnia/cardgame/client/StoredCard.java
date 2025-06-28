@@ -4,6 +4,7 @@
  */
 package com.dariuszlusnia.cardgame.client;
 
+import com.dariuszlusnia.cardgame.client.common.CollectionFunctions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

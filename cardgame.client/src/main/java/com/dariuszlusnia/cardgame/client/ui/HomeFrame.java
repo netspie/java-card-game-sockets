@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.dariuszlusnia.cardgame.client;
+package com.dariuszlusnia.cardgame.client.ui;
 
+import com.dariuszlusnia.cardgame.client.common.MessageType;
+import com.dariuszlusnia.cardgame.client.common.RequestProcessor;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

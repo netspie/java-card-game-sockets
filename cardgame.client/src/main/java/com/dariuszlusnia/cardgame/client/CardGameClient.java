@@ -4,6 +4,7 @@
 
 package com.dariuszlusnia.cardgame.client;
 
+import com.dariuszlusnia.cardgame.client.ui.HomeFrame;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
